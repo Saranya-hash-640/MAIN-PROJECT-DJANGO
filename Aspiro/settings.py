@@ -10,8 +10,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -------------------------
 # SECURITY
 # -------------------------
-SECRET_KEY = config('DJANGO_SECRET_KEY', default='django-insecure-XXXX')
+from decouple import config
+
+SECRET_KEY = config('DJANGO_SECRET_KEY')
+RAZORPAY_KEY_ID = config('RAZORPAY_KEY_ID')
+RAZORPAY_KEY_SECRET = config('RAZORPAY_KEY_SECRET')
 DEBUG = config('DEBUG', default=False, cast=bool)
+
 ALLOWED_HOSTS = ['saranyanm.pythonanywhere.com']
 
 # -------------------------
