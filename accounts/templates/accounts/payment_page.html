@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Razorpay Test Payment</title>
+</head>
+<body>
+
+<h2>Razorpay Test Payment Demo</h2>
+<p>Amount: ₹{{ amount_inr }}</p>
+
+<button id="pay-btn">Pay ₹{{ amount_inr }}</button>
+
+<form method="POST" action="{% url 'payment_success' %}" id="razorpay-form">
+    {% csrf_token %}
+    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+    <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+    <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+</form>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.getElementById("pay-btn").onclick = function(e) {
+    var options = {
+        "key": "{{ razorpay_key_id }}",
+        "amount": "{{ amount_paise }}",
+        "currency": "INR",
+        "order_id": "{{ order_id }}",
+        "method": { "upi": true },
+        "handler": function(response) {
+            document.getElementById("razorpay_payment_id").value = response.razorpay_payment_id;
+            document.getElementById("razorpay_order_id").value = response.razorpay_order_id;
+            document.getElementById("razorpay_signature").value = response.razorpay_signature;
+            document.getElementById("razorpay-form").submit();
+        }
+    };
+    new Razorpay(options).open();
+    e.preventDefault();
+}
+</script>
+
+</body>
+</html>

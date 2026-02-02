@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Employer Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Welcome, {{ request.user.username }}</h2>
+   
+
+    <!-- Payment / Subscription Check -->
+    {% if profile and not profile.paid and not profile.is_free_period_active %}
+        <div class="alert alert-warning">
+            Your subscription is not active. 
+            <a href="{% url 'payment_page' %}" class="btn btn-primary btn-sm">Pay Now</a>
+        </div>
+    {% endif %}
+
+    <!-- Quick Action -->
+    <div class="mb-3">
+        <a href="{% url 'jobs:post_job' %}" class="btn btn-success">Post New Job</a>
+    </div>
+
+    <!-- Posted Jobs -->
+    {% if jobs %}
+        {% for job in jobs %}
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5>{{ job.title }} - {{ job.location }}</h5>
+                    <small>Posted on: {{ job.posted_at|date:"d M Y" }}</small>
+                </div>
+                <div class="card-body">
+                    <p>{{ job.description|linebreaks }}</p>
+                    <p><strong>Salary:</strong> {{ job.salary }}</p>
+
+                    <h6>Applicants:</h6>
+                    {% if job.applications.exists %}
+                        <ul>
+                        {% for app in job.applications.all %}
+                            <li class="mb-2">
+                                {{ app.employee.username }} - {{ app.status }}
+                                <a href="{% url 'jobs:view_employee_profile' app.id %}" class="btn btn-sm btn-secondary">View</a>
+
+                                <form method="post" action="{% url 'jobs:update_application_status' app.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <select name="status">
+                                        <option value="Pending" {% if app.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                        <option value="Shortlisted" {% if app.status == 'Shortlisted' %}selected{% endif %}>Shortlisted</option>
+                                        <option value="Rejected" {% if app.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                                    </select>
+                                    <input type="text" name="interview_details" placeholder="Interview details" value="{{ app.interview_details }}">
+                                    <button type="submit" class="btn btn-sm btn-secondary">Update</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No applications yet.</p>
+                    {% endif %}
+
+                    <div class="mt-2">
+                        <a href="{% url 'jobs:update_job' job.pk %}" class="btn btn-sm btn-primary">Edit Job</a>
+                        <a href="{% url 'jobs:delete_job' job.pk %}" class="btn btn-sm btn-danger">Delete Job</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You have not posted any jobs yet.</p>
+    {% endif %}
+
+    <!-- All Applications Table -->
+    {% if applications %}
+        <h3>All Job Applications</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Job</th>
+                    <th>Candidate</th>
+                    <th>Experience</th>
+                    <th>Resume</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in applications %}
+                <tr>
+                    <td>{{ app.job.title }}</td>
+                    <td>{{ app.employee.full_name }}</td>
+                    <td>{{ app.employee.experience|default:"0" }} years</td>
+                    <td>
+                        {% if app.employee.resume %}
+                            <a href="{{ app.employee.resume.url }}" target="_blank">View Resume</a>
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'jobs:view_employee_profile' app.id %}" class="btn btn-sm btn-info">View Details</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %}

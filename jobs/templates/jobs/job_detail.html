@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>{{ job.title }}</h2>
+    <p><strong>Company:</strong> {{ job.employer.company_name|default:"N/A" }}</p>
+    <p><strong>Location:</strong> {{ job.location }}</p>
+    
+    <h4>Description</h4>
+    <p>{{ job.description }}</p>
+
+    <!-- <h4>Requirements</h4>
+    <p>{{ job.requirements }}</p> -->
+
+    <a href="{% url 'jobs:job_list' %}" class="btn btn-secondary mt-3">Back to Jobs</a>
+
+    {% if request.user.is_authenticated and request.user.employeeprofile %}
+    {% if has_applied %}
+        <button class="btn btn-success mt-2" disabled>Already Applied</button>
+    {% else %}
+        <form method="post" action="{% url 'jobs:apply_job' job.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary mt-2">Apply Now</button>
+        </form>
+    {% endif %}
+{% endif %}
+
+
+</div>
+{% endblock %}

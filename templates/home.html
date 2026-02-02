@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Aspiro | Find Your Dream Job{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background-color: #b5b8be;
+        font-family: "Inter", sans-serif;
+        background-image: url(https://www.bbvapivot.com/wp-content/uploads/2021/05/portada-reporting.jpg);
+       
+      
+    }
+
+    .hero-section {
+        align-content: center;
+        /* min-height: 90vh; */
+        /* display: flex; */
+        /* align-items: center; */
+        background: linear-gradient(
+            135deg,
+            /* #ffffff 0%, */
+            /* #f2f3f5 45%, */
+            /* #e5e7eb 100% */
+        );
+    }
+
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #dd7530;
+        align-items: center;
+    }
+
+    .hero-title span {
+        color: #2e3642;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+        color: #d3764b;
+        margin-top: 10px;
+        font-weight: 600;
+    }
+
+    .search-box input {
+        height: 52px;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+    }
+
+    .search-box button {
+        height: 52px;
+        border-radius: 8px;
+        font-weight: 600;
+        background-color: #1f2937;
+        border: none;
+    }
+
+    .search-box button:hover {
+        background-color: #111827;
+    }
+
+   
+</style>
+
+<section class="hero-section">
+    <div class="container text-center">
+        <h1 class="hero-title">
+            Find Your <span>Dream Job</span>
+        </h1>
+
+        <p class="hero-subtitle">
+            Explore thousands of job opportunities with Aspiro
+        </p>
+
+
+                <form class="search-box mt-4" method="get" action="{% url 'jobs:job_list' %}">
+    <div class="row g-2 justify-content-center">
+        <div class="col-md-4">
+            <input type="text"
+                   class="form-control"
+                   name="keyword"
+                   placeholder="Job title or keyword">
+        </div>
+
+        <div class="col-md-3">
+            <input type="text"
+                   class="form-control"
+                   name="location"
+                   placeholder="Location">
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-dark w-100">
+                Search
+            </button>
+        </div>
+    </div>
+</form>
+
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br><br><br>
+                <p class="hero-subtitle">
+            Aspiro Job Portal is a modern recruitment platform designed to connect job seekers with the right opportunities <br>
+            and help employers find top talent efficiently. With an easy-to-use interface, verified job listings, and smart <br>
+            application tracking, Aspiro simplifies the hiring journey for both candidates and recruiters.
+        </p>
+
+        <!-- Add this just before the closing </section> tag -->
+<div class="text-center mt-5">
+    <h3 class="hero-subtitle mb-3">
+        Are you an employer? Reach the best talent today!
+    </h3>
+    <a href="{% url 'login' %}" class="btn btn-secondary btn-lg fw-bold">
+        Post Jobs
+    </a>
+</div>
+
+
+            </div>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Create Employee Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm p-4 mx-auto" style="max-width: 700px;">
+        <h2 class="card-title mb-3">Create Your Employee Profile</h2>
+        <p class="text-muted mb-4">
+            Fill out the form below to complete your employee profile. All fields are required.
+        </p>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="text-danger small mt-1">{{ field.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">
+                    Create Profile
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

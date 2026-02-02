@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="row justify-content-center">
+  <div class="col-md-6 shadow p-4 rounded bg-light">
+    <h3 class="text-center mb-4">Create Account</h3>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <!-- Role -->
+      <div class="mb-3">
+        <label class="form-label">Register As</label>
+        <select name="role" class="form-select" required>
+          <option value="">Select role</option>
+          <option value="employee">Employee</option>
+          <option value="employer">Employer</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password1" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Confirm Password</label>
+        <input type="password" name="password2" class="form-control" required>
+      </div>
+
+      <!-- Employee fields -->
+      <div class="mb-3">
+        <label class="form-label">Phone (Employee)</label>
+        <input type="text" name="phone" class="form-control">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Skills (Employee)</label>
+        <textarea name="skills" class="form-control"></textarea>
+      </div>
+
+      <!-- Employer fields -->
+      <div class="mb-3">
+        <label class="form-label">Company Name (Employer)</label>
+        <input type="text" name="company_name" class="form-control">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Company Description</label>
+        <textarea name="description" class="form-control"></textarea>
+      </div>
+
+      <button class="btn btn-success w-100">Register</button>
+    </form>
+
+    <p class="text-center mt-3">
+      Already have an account? <a href="{% url 'accounts:login' %}">Login</a>
+    </p>
+  </div>
+</div>
+
+{% endblock %}

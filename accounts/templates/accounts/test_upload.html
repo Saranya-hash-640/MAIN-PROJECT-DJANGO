@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Test Resume Upload</h2>
+    <form method="POST" action="{% url 'upload_resume' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="resume">
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>

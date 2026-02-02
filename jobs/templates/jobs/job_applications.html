@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Applications for {{ job.title }}</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Candidate</th>
+            <th>Experience</th>
+            <th>Resume</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if applications %}
+            {% for app in applications %}
+            <tr>
+                <td>{{ app.employee.user.get_full_name }}</td>
+                <td>{{ app.employee.experience }}</td>
+                <td>
+                    {% if app.employee.resume %}
+                        <a href="{{ app.employee.resume.url }}" target="_blank">View Resume</a>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td>{{ app.status }}</td>
+                <td>
+                    <a href="{% url 'jobs:view_employee_profile' app.id %}" class="btn btn-sm btn-primary">View Details</a>
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="5">No applications yet</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

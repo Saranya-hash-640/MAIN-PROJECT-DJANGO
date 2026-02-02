@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Employee Profile: {{ employee.username }}</h2>
+    
+    <div class="card mb-3">
+        <div class="card-body">
+            <p><strong>Full Name:</strong> {{ employee.full_name }}</p>
+<p><strong>Email:</strong> {{ employee.user.email }}</p>
+<p><strong>Username:</strong> {{ employee.user.username }}</p>
+<p><strong>Phone:</strong> {{ employee.phone }}</p>
+<p><strong>Skills:</strong> {{ employee.skills }}</p>
+<p><strong>Experience:</strong> {{ employee.experience }}</p>
+<p><strong>Qualification:</strong> {{ employee.qualification }}</p>
+
+{% if application.resume %}
+                <p><strong>Resume:</strong> 
+                    <a href="{{ application.resume.url }}" target="_blank" class="btn btn-sm btn-primary">Download Resume</a>
+                </p>
+            {% endif %}
+            
+
+            {% if application.message %}
+                <p><strong>Message:</strong> {{ application.message }}</p>
+            {% endif %}
+
+            
+        </div>
+    </div>
+
+    <a href="{% url 'jobs:job_applications' job.id %}" class="btn btn-secondary">Back to Applications</a>
+</div>
+{% endblock %}
