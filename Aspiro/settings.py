@@ -15,7 +15,7 @@ from decouple import config
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 RAZORPAY_KEY_ID = config('RAZORPAY_KEY_ID')
 RAZORPAY_KEY_SECRET = config('RAZORPAY_KEY_SECRET')
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = False
 
 ALLOWED_HOSTS = ['saranyanm.pythonanywhere.com']
 
