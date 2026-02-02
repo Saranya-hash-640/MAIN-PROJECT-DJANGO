@@ -21,11 +21,11 @@ def main():
 if __name__ == '__main__':
     main()
 
-# Django secret key
-SECRET_KEY= "django-insecure-XXXX"
+# # Django secret key
+# SECRET_KEY= "django-insecure-XXXX"
 
-# Debug mode
-DEBUG=True
+# # Debug mode
+# DEBUG=True
 
 
 
