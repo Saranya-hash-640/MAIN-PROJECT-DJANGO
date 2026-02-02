@@ -8,6 +8,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import User, EmployeeProfile
 
+
+
 class EmployeeSignUpForm(UserCreationForm):
     full_name = forms.CharField(
         max_length=100,
@@ -82,9 +84,6 @@ class ResumeUploadForm(forms.ModelForm):
         model = EmployeeProfile
         fields = ['resume']  # Make sure 'resume' is the field in your model
 
-# accounts/forms.py
-from django import forms
-from .models import EmployeeProfile
 
 class EmployeeProfileForm(forms.ModelForm):
     class Meta:
@@ -97,8 +96,7 @@ class EmployeeProfileForm(forms.ModelForm):
             'experience': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'resume': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
-from django import forms
-from .models import EmployeeProfile
+
 
 class EmployeeProfileForm(forms.ModelForm):
     class Meta:

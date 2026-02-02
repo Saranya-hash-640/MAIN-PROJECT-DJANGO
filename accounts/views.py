@@ -7,7 +7,6 @@ from datetime import timedelta
 from django.conf import settings
 import razorpay
 from .models import Message
-
 from .models import User, EmployeeProfile, EmployerProfile, Payment
 from .forms import EmployeeProfileForm
 from jobs.models import Job, JobApplication
@@ -100,40 +99,7 @@ def logout_view(request):
     logout(request)
     return redirect('home')
 
-# ----------------- Employee Dashboard -----------------
-# @login_required
-# def employee_dashboard(request):
-#     user = request.user
 
-#     # Get or create employee profile
-#     profile, _ = EmployeeProfile.objects.get_or_create(user=user)
-#     messages_received = Message.objects.filter(receiver=user).order_by('-timestamp')
-
-#     # Handle profile update
-#     if request.method == 'POST':
-#         form = EmployeeProfileForm(request.POST, request.FILES, instance=profile)
-#         if form.is_valid():
-#             profile = form.save(commit=False)
-#             profile.user = user
-#             profile.save()
-#             messages.success(request, "Profile updated successfully!")
-#             return redirect('accounts:employee_dashboard')
-#         else:
-#             messages.error(request, "Please correct the errors below.")
-#     else:
-#         form = EmployeeProfileForm(instance=profile)
-
-#     # ✅ Filter job applications using EmployeeProfile instance
-#     applications = JobApplication.objects.filter(employee=profile).order_by('-applied_at')
-
-#     context = {
-#         'profile': profile,
-#         'form': form,
-#         'applications': applications,
-#         'messages_received': messages_received,
-#     }
-
-#     return render(request, 'dashboard/employee_dashboard.html', context)
 
 @login_required
 def employee_dashboard(request):
