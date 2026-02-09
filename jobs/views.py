@@ -16,22 +16,39 @@ def job_list(request):
 
 # Job detail
 
+# @login_required
+# def job_detail(request, job_id):
+#     job = get_object_or_404(Job, id=job_id)
+
+#     # Check if current user is an employee
+#     profile = getattr(request.user, 'employeeprofile', None)
+#     has_applied = False
+#     if profile:
+#         # Check if this employee has already applied to this job
+#         has_applied = JobApplication.objects.filter(job=job, employee=profile).exists()
+
+#     return render(request, 'jobs/job_detail.html', {
+#         'job': job,
+#         'has_applied': has_applied
+#     })
 @login_required
 def job_detail(request, job_id):
     job = get_object_or_404(Job, id=job_id)
 
-    # Check if current user is an employee
     profile = getattr(request.user, 'employeeprofile', None)
     has_applied = False
+
     if profile:
-        # Check if this employee has already applied to this job
-        has_applied = JobApplication.objects.filter(job=job, employee=profile).exists()
+        has_applied = JobApplication.objects.filter(
+            job=job,
+            employee=profile
+        ).exists()
 
     return render(request, 'jobs/job_detail.html', {
         'job': job,
-        'has_applied': has_applied
+        'has_applied': has_applied,
+        'is_employee': profile is not None
     })
-
 # Apply to job
 @login_required
 def apply_job(request, job_id):
