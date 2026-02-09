@@ -11,7 +11,7 @@
 
 <button id="pay-btn">Pay ₹{{ amount_inr }}</button>
 
-<form method="POST" action="{% url 'payment_success' %}" id="razorpay-form">
+<form method="POST" action="{% url 'accounts:payment_success' %}" id="razorpay-form">
     {% csrf_token %}
     <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
     <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
