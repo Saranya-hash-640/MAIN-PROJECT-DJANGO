@@ -192,3 +192,4 @@ def delete_job(request, id):
         return redirect("jobs:job_list")
 
     return render(request, "jobs/confirm_delete.html", {"job": job})
+    
