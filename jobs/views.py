@@ -31,39 +31,53 @@ def job_list(request):
 #         'job': job,
 #         'has_applied': has_applied
 #     })
+@login_required
 def job_detail(request, job_id):
     job = get_object_or_404(Job, id=job_id)
 
+    employee_profile = None
     has_applied = False
-    is_employee = False
 
-    if request.user.is_authenticated:
-        is_employee = hasattr(request.user, 'employeeprofile')
-        if is_employee:
-            has_applied = JobApplication.objects.filter(
-                job=job,
-                employee=request.user.employeeprofile
-            ).exists()
+    if hasattr(request.user, 'employee_profile'):
+        employee_profile = request.user.employee_profile
+        has_applied = JobApplication.objects.filter(
+            job=job,
+            employee=employee_profile
+        ).exists()
 
-    context = {
+    return render(request, 'jobs/job_detail.html', {
         'job': job,
         'has_applied': has_applied,
-        'is_employee': is_employee,
-    }
-    return render(request, 'jobs/job_detail.html', context)
+        'is_employee': employee_profile is not None,
+    })
 
 # Apply to job
+# @login_required
+# def apply_job(request, job_id):
+#     job = get_object_or_404(Job, id=job_id)
+#     profile = getattr(request.user, 'employeeprofile', None)
+    
+#     if profile and request.method == 'POST':
+#         JobApplication.objects.get_or_create(job=job, employee=profile)
+#         return redirect('jobs:job_detail', job_id=job.id)
+    
+#     return redirect('jobs:job_detail', job_id=job.id)
+
 @login_required
 def apply_job(request, job_id):
-    job = get_object_or_404(Job, id=job_id)
-    profile = getattr(request.user, 'employeeprofile', None)
-    
-    if profile and request.method == 'POST':
-        JobApplication.objects.get_or_create(job=job, employee=profile)
-        return redirect('jobs:job_detail', job_id=job.id)
-    
-    return redirect('jobs:job_detail', job_id=job.id)
+    if not hasattr(request.user, 'employee_profile'):
+        return redirect('jobs:job_detail', job_id=job_id)
 
+    job = get_object_or_404(Job, id=job_id)
+    profile = request.user.employee_profile
+
+    if request.method == 'POST':
+        JobApplication.objects.get_or_create(
+            job=job,
+            employee=profile
+        )
+
+    return redirect('jobs:job_detail', job_id=job.id)
 
 
 
