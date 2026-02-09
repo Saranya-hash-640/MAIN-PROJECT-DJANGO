@@ -31,24 +31,27 @@ def job_list(request):
 #         'job': job,
 #         'has_applied': has_applied
 #     })
-@login_required
 def job_detail(request, job_id):
     job = get_object_or_404(Job, id=job_id)
 
-    profile = getattr(request.user, 'employeeprofile', None)
     has_applied = False
+    is_employee = False
 
-    if profile:
-        has_applied = JobApplication.objects.filter(
-            job=job,
-            employee=profile
-        ).exists()
+    if request.user.is_authenticated:
+        is_employee = hasattr(request.user, 'employeeprofile')
+        if is_employee:
+            has_applied = JobApplication.objects.filter(
+                job=job,
+                employee=request.user.employeeprofile
+            ).exists()
 
-    return render(request, 'jobs/job_detail.html', {
+    context = {
         'job': job,
         'has_applied': has_applied,
-        'is_employee': profile is not None
-    })
+        'is_employee': is_employee,
+    }
+    return render(request, 'jobs/job_detail.html', context)
+
 # Apply to job
 @login_required
 def apply_job(request, job_id):
