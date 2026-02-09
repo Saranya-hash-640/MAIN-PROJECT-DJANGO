@@ -183,3 +183,12 @@ def employee_detail(request, application_id):
         'application': application
     })
 
+@login_required
+def delete_job(request, id):
+    job = get_object_or_404(Job, id=id)
+
+    if request.method == "POST":
+        job.delete()
+        return redirect("jobs:job_list")
+
+    return render(request, "jobs/confirm_delete.html", {"job": job})

@@ -38,4 +38,5 @@ urlpatterns = [
     # MOST GENERIC ALWAYS LAST
     path('<int:job_id>/', views.job_detail, name='job_detail'),
    
+   
 ]
