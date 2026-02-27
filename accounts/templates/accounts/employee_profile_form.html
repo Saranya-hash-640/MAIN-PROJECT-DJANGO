@@ -1,39 +1,99 @@
 {% extends "base.html" %}
 
-{% block title %}Create Employee Profile{% endblock %}
+{% block title %}
+    {% if is_update %}Update{% else %}Create{% endif %} Employee Profile
+{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <div class="card shadow-sm p-4 mx-auto" style="max-width: 700px;">
-        <h2 class="card-title mb-3">Create Your Employee Profile</h2>
-        <p class="text-muted mb-4">
-            Fill out the form below to complete your employee profile. All fields are required.
-        </p>
+    <div class="card shadow p-4 mx-auto" style="max-width: 750px;">
+        
+        <h2 class="mb-4 text-center">
+            {% if is_update %}
+                Update Your Profile
+            {% else %}
+                Create Your Employee Profile
+            {% endif %}
+        </h2>
 
+        <!-- Django Messages -->
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-success">{{ message }}</div>
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
             {% endfor %}
         {% endif %}
 
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
-            {% for field in form %}
-                <div class="mb-3">
-                    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field }}
-                    {% if field.errors %}
-                        <div class="text-danger small mt-1">{{ field.errors.0 }}</div>
-                    {% endif %}
-                </div>
-            {% endfor %}
+            <!-- Full Name -->
+            <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                {{ form.full_name }}
+                {% if form.full_name.errors %}
+                    <div class="text-danger small">
+                        {{ form.full_name.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
 
+            <!-- Phone -->
+            <div class="mb-3">
+                <label class="form-label">Phone</label>
+                {{ form.phone }}
+                {% if form.phone.errors %}
+                    <div class="text-danger small">
+                        {{ form.phone.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Skills -->
+            <div class="mb-3">
+                <label class="form-label">Skills</label>
+                {{ form.skills }}
+                {% if form.skills.errors %}
+                    <div class="text-danger small">
+                        {{ form.skills.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Experience -->
+            <div class="mb-3">
+                <label class="form-label">Experience</label>
+                {{ form.experience }}
+                {% if form.experience.errors %}
+                    <div class="text-danger small">
+                        {{ form.experience.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Resume -->
+            <div class="mb-3">
+                <label class="form-label">Resume</label>
+                {{ form.resume }}
+                {% if form.resume.errors %}
+                    <div class="text-danger small">
+                        {{ form.resume.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Submit Button -->
             <div class="text-end">
-                <button type="submit" class="btn btn-primary">
-                    Create Profile
+                <button type="submit" class="btn btn-primary px-4">
+                    {% if is_update %}
+                        Update Profile
+                    {% else %}
+                        Create Profile
+                    {% endif %}
                 </button>
             </div>
+
         </form>
     </div>
 </div>
